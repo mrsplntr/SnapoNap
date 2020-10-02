@@ -1,0 +1,29 @@
+{
+  "name": "snaopnap_multiplayer",
+  "version": "1.0.0",
+  "description": "Multi-player version of Snap-O-Nap web game",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuyG-Saha/SnapoNap.git"
+  },
+  "keywords": [
+    "snaopnap"
+  ],
+  "author": "Ido Weiss & Guy Gontar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuyG-Saha/SnapoNap/issues"
+  },
+  "homepage": "https://github.com/GuyG-Saha/SnapoNap#readme",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "socket.io": "^2.3.0"
+  }
+}
