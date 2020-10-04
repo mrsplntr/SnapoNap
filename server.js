@@ -7,6 +7,9 @@ const PORT = process.env.PORT || 8080;
 
 app.use('/js', express.static(__dirname + '/js'));
 app.use('/style', express.static(__dirname + '/style'));
+app.use('/public', express.static(__dirname + '/public'));
+app.use('/root', express.static(__dirname + '/'));
+
 
 
 app.set('view engine', 'ejs');
@@ -20,4 +23,9 @@ server.listen(PORT, () => {
 
 app.get('/', (request, response) => {
     response.render('index');
+});
+
+io.on('connection', socket => {
+    console.log(`New User connected with socket id ${socket.id}`);
+    socket.emit('chat-message', `Hello SnapONap!`)
 });
