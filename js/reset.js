@@ -39,6 +39,7 @@ function endGame() {
     showResultsStartRadio();
     saveResults();
     showAlertOfWrittenWords();
+    emitEndGame();
 }
 
 function saveResults() {
