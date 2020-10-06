@@ -27,17 +27,17 @@ if (onStartButton != null) {
             socket.emit('game-ended', roomName, message)
         }
     }
+} else {
+    socket.on('room-created', roomName => {
+        const roomElement = document.createElement('div');
+        roomElement.innerText = roomName;
+        const roomLink = document.createElement('a');
+        roomLink.href = `/${roomName}`;
+        roomLink.innerText = 'Join';
+        roomContainer.append(roomElement);
+        roomContainer.append(roomLink);
+    });
 }
-
-socket.on('room-created', roomName => {
-    const roomElement = document.createElement('div');
-    roomElement.innerText = roomName;
-    const roomLink = document.createElement('a');
-    roomLink.href = `/${roomName}`;
-    roomLink.innerText = 'Join';
-    roomContainer.append(roomElement);
-    roomContainer.append(roomLink);
-});
 
 socket.on('chat-message', data => {
     console.log(data)

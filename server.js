@@ -17,7 +17,7 @@ app.set('views', __dirname + '/views');
 app.set('view options', { layout: true } );
 
 
-const players = {};
+// const players = {};
 const rooms = {};
 
 
@@ -51,10 +51,7 @@ app.post('/room', (request, response) => {
 });
 
 io.on('connection', socket => {
-    if (players[socket.id] == null)
-        console.log(`New user connected with socket id ${socket.id}`);
-    else
-        console.log(`New user connected with the name ${players[socket.id]}`)
+    console.log(`New user connected with socket id ${socket.id}`);
     socket.emit('chat-message', `Welcome to SnapONap!`);
 
     socket.on('game-started', (room, message) => {
@@ -70,11 +67,11 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
-        if (players[socket.id] != null && players[socket.id] !== "")
-            console.log(`${players[socket.id]} disconnected`)
-        else
-            console.log(`User with socket id ${socket.id} disconnected`)
-        delete players[socket.id];
+        getUserRooms(socket).forEach(room => {
+            socket.broadcast.emit('user-disconnected', rooms[room].players[socket.id]);
+            delete rooms[room].players[socket.id];
+        });
+        console.log(`User with socket id ${socket.id} disconnected`);
     });
 
     socket.on('new-user-name', (room, name) => {
@@ -84,4 +81,12 @@ io.on('connection', socket => {
     })
 
 });
+
+function getUserRooms(socket) {
+    return Object.entries(rooms).reduce((names, [name, room]) => {
+        if (room.players[socket.id] != null)
+            names.push[name]
+        return names
+    }, [])
+}
 
