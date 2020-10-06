@@ -10,17 +10,21 @@ if (onStartButton != null) {
     onStartButton.addEventListener('click', e => {
         e.preventDefault();
         if (name == null || name === "") {
-            socket.emit('game-started', `User with socket id ${socket.id} started their game!`);
+            const message = `User with socket id ${socket.id} started their game at ${roomName}!`;
+            socket.emit('game-started', roomName, message);
         } else {
-            socket.emit('game-started', `User ${name} started their game!`);
+            const message = `User ${name} started their game at ${roomName}!`;
+            socket.emit('game-started', roomName, message);
         }
     });
 
     function emitEndGame() {
         if (name == null || name === "") {
-            socket.emit('game-ended', `User with socket id ${socket.id} ended their game`)
+            const message = `User with socket id ${socket.id} ended their game at ${roomName}`;
+            socket.emit('game-ended', roomName, message)
         } else {
-            socket.emit('game-ended', `${name} ended their game`)
+            const message = `User ${name} ended their game at ${roomName}!`;
+            socket.emit('game-ended', roomName, message)
         }
     }
 }
@@ -39,8 +43,8 @@ socket.on('chat-message', data => {
     console.log(data)
 });
 
-socket.on('user-connected', (room, name) => {
-    console.log(`${name} connected to ${room} room!`)
+socket.on('user-connected', name => {
+    console.log(`${name} connected to room ${roomName}!`)
 });
 
 socket.on('game-started', message => {

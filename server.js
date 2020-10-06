@@ -18,7 +18,7 @@ app.set('view options', { layout: true } );
 
 
 const players = {};
-const rooms = { defaultRoom: {} };
+const rooms = {};
 
 
 server.listen(PORT, () => {
@@ -57,14 +57,16 @@ io.on('connection', socket => {
         console.log(`New user connected with the name ${players[socket.id]}`)
     socket.emit('chat-message', `Welcome to SnapONap!`);
 
-    socket.on('game-started', message => {
+    socket.on('game-started', (room, message) => {
         console.log(`Message from client: ${message}`);
-        socket.broadcast.emit('game-started', message);
+        socket.join(room);
+        socket.to(room).broadcast.emit('game-started', message);
     });
 
-    socket.on('game-ended', message => {
-        console.log(`Message from client: ${message}`);
-        socket.broadcast.emit('game-ended', message)
+    socket.on('game-ended', (room, message) => {
+        console.log(`Message from client at ${room}: ${message}`);
+        socket.join(room);
+        socket.to(room).broadcast.emit('game-ended', message)
     });
 
     socket.on('disconnect', () => {
@@ -76,9 +78,9 @@ io.on('connection', socket => {
     });
 
     socket.on('new-user-name', (room, name) => {
-        console.log(`room name: ${room}`)
-        players[socket.id] = name;
-        socket.broadcast.emit('user-connected', room, name)
+        socket.join(room);
+        rooms[room].players[socket.id] = name;
+        socket.to(room).broadcast.emit('user-connected', name)
     })
 
 });
