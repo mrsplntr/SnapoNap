@@ -20,111 +20,16 @@
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
 </head>
-<body> 
-
-    <div class="container" style="margin-top: 1rem;">
-        <h1 class="display-5" style="text-align: center;">
-            Snap oNap
-        </h1>
-        <div class="" style="text-align: center;">
-            <p class="lead">
-                Type the following word:
-            </p>
-            <div class="card border-primary mb-3"
-                style="max-width: 20rem; margin-left: auto; margin-right: auto; margin-top: 1rem;">
-                <div class="card-header" style="text-align: center; font-size: 200%;">
-                    <button type="button" class="btn btn-secondary badge badge-dark" id="onStart">
-                        Start
-                    </button>
-                    <span class="noselect" id="displayWord"></span>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Type here..."  id="insertedWord" disabled>
-                        </div>
-                    </h4>
-                    <p class="card-text">
-                        <p class="text-muted" id="displayResults">
-                        </p>
-                        <p class="text-primary">
-                            Timer: <span id="displayTimeLeft">0</span>
-                        </p>
-                        <p class="text-primary">
-                            Points: <span id="displayScore">0</span>
-                        </p>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="alert alert-dismissible alert-secondary" style="text-align: center;" id="alertWrittenWords">
-                <button type="button" class="close" data-dismiss="alert" id="closeAlert">&times;</button>
-                <div id="brokeARecord"></div>
-                Written words: <br>
-                <span id="writtenWords"></span>
-        </div>
-
-        <div style="margin-top: 100rem" id="settingsRules"></div>
-
-        <div class="row" style="text-align: center; margin-top: 2rem;">
-            <div class="col-6">
-                <h4>Settings</h4>
-            </div>
-            <div class="col-6">
-                <h4>Rules</h4>
-            </div>
-
-            <div class="col-6 card border-primary mb-3" style="text-align: center;">
-                <fieldset class="form-group" id='radioVersion' style="text-align: center;">
-                    <legend>Version:</legend>
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="version" id="onNoob" value="three" checked>
-                        Noob
-                    </label>
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="version" id="onPro" value="five">
-                        Pro
-                    </label>
-                </fieldset>
-                <fieldset class="form-group" id='radioTimes' style="text-align: center;">
-                    <legend>Speed:</legend>
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="times" id="onThree" value="three">
-                        3 Sec
-                    </label>
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="times" id="onFive" value="five" checked>
-                        5 Sec
-                    </label>
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="times" id="onTen" value="ten">
-                        10 Sec
-                    </label>
-                </fieldset>
-            </div>
-
-            <div class="col-6 card border-primary mb-3">
-                <div style="text-align: center;">                    
-                    <p>Anagram: <br> 1 point</p>
-                    <p>Identical: <br> 2 points</p>
-                    <p>Palindrome: <br> 3 points</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="container" style="text-align: center">
-            <span class="text-muted">
-                Developed by Ido W. - No rights reserved.
-            </span>
-        </div>
-    </footer>
-
-    <script src="/js/wordsData.js"></script>
-    <script src="/js/elements.js"></script>
-    <script src="/js/reset.js"></script>
-    <script src="/js/app.js"></script>
+<body>
+<div id="room-container">
+    <% Object.keys(rooms).forEach(room => { %>
+        <div><%= room %></div>
+        <a href="/<%= room %>">Join</a>
+    <% }) %>
+</div>
+<form action="/room" method="POST">
+    <input name="room" type="text" required>
+    <button type="submit">New Room</button>
+</form>
 </body>
 </html>
