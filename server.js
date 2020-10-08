@@ -42,7 +42,7 @@ app.post('/room', (request, response) => {
             return response.redirect('/')
         }
         rooms[request.body.room] = { players: {} };
-        response.redirect(request.body.room)
+        response.redirect(request.body.room);
         // Emit new message that a new room was created
         io.emit('room-created', request.body.room)
     } else {
@@ -68,7 +68,7 @@ io.on('connection', socket => {
 
     socket.on('disconnect', () => {
         getUserRooms(socket).forEach(room => {
-            socket.broadcast.emit('user-disconnected', rooms[room].players[socket.id]);
+            socket.to(room).broadcast.emit('user-disconnected', rooms[room].players[socket.id]);
             delete rooms[room].players[socket.id];
         });
         console.log(`User with socket id ${socket.id} disconnected`);
@@ -85,7 +85,7 @@ io.on('connection', socket => {
 function getUserRooms(socket) {
     return Object.entries(rooms).reduce((names, [name, room]) => {
         if (room.players[socket.id] != null)
-            names.push[name]
+            names.push(name);
         return names
     }, [])
 }

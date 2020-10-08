@@ -20,10 +20,11 @@ if (onStartButton != null) {
 
     function emitEndGame() {
         if (name == null || name === "") {
-            const message = `User with socket id ${socket.id} ended their game at ${roomName}`;
+            const message = `User with socket id ${socket.id} ended their game at ${roomName} 
+            with ${displayScore.innerText} points!`;
             socket.emit('game-ended', roomName, message)
         } else {
-            const message = `User ${name} ended their game at ${roomName}!`;
+            const message = `User ${name} ended their game at ${roomName} with ${displayScore.innerText} points!`;
             socket.emit('game-ended', roomName, message)
         }
     }
@@ -45,6 +46,10 @@ socket.on('chat-message', data => {
 
 socket.on('user-connected', name => {
     console.log(`${name} connected to room ${roomName}!`)
+});
+
+socket.on('user-disconnected', name => {
+    console.log(`${name} has left the room`)
 });
 
 socket.on('game-started', message => {
