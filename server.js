@@ -101,11 +101,11 @@ function getScoreByMessage(message) {
 }
 
 function getWinningSocketId(scores) {
-    let min = 0;
+    let max = 0;
     let socket_id = null;
     scores.forEach( scoreObject => {
-        if (scoreObject['Score'] > min) {
-            min = scoreObject['Score'];
+        if (scoreObject['Score'] > max) {
+            max = scoreObject['Score'];
             socket_id = scoreObject['Socket_Id'];
         }
     });
