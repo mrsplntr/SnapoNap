@@ -9,23 +9,23 @@ if (onStartButton != null) {
 
     onStartButton.addEventListener('click', e => {
         e.preventDefault();
+        let message = '';
         if (name == null || name === "") {
-            const message = `User with socket id ${socket.id} started their game at ${roomName}!`;
-            socket.emit('game-started', roomName, message);
+            message = `User with socket id ${socket.id} started their game at ${roomName}!`;
         } else {
-            const message = `User ${name} started their game at ${roomName}!`;
-            socket.emit('game-started', roomName, message);
+            message = `User ${name} started their game at ${roomName}!`;
         }
+        socket.emit('game-started', roomName, message);
     });
 
     function emitEndGame() {
         if (name == null || name === "") {
             const message = `User with socket id ${socket.id} ended their game at ${roomName} 
             with ${displayScore.innerText} points!`;
-            socket.emit('game-ended', roomName, message)
+            socket.emit('game-ended', roomName, message, socket.id)
         } else {
             const message = `User ${name} ended their game at ${roomName} with ${displayScore.innerText} points!`;
-            socket.emit('game-ended', roomName, message)
+            socket.emit('game-ended', roomName, message, socket.id)
         }
     }
 } else {
@@ -54,6 +54,7 @@ socket.on('user-disconnected', name => {
 
 socket.on('game-started', message => {
     console.log(message);
+    startGame();
 });
 
 socket.on('game-ended', message => {

@@ -19,6 +19,7 @@ app.set('view options', { layout: true } );
 
 // const players = {};
 const rooms = {};
+let scores = {};
 
 
 server.listen(PORT, () => {
@@ -57,13 +58,18 @@ io.on('connection', socket => {
     socket.on('game-started', (room, message) => {
         console.log(`Message from client: ${message}`);
         socket.join(room);
-        socket.to(room).broadcast.emit('game-started', message);
+        const game_starts_message = `Game starts at ${room}!`;
+        socket.to(room).broadcast.emit('game-started', game_starts_message);
+        scores[room] = []
     });
 
-    socket.on('game-ended', (room, message) => {
+    socket.on('game-ended', (room, message, socket_id) => {
         console.log(`Message from client at ${room}: ${message}`);
+        scores[room].push({ Score: getScoreByMessage(message), Socket_Id: socket_id });
+        console.log(scores[room]);
         socket.join(room);
-        socket.to(room).broadcast.emit('game-ended', message)
+        socket.to(room).broadcast.emit('game-ended', message);
+        console.log(getWinningSocketId(scores[room]));
     });
 
     socket.on('disconnect', () => {
@@ -88,5 +94,21 @@ function getUserRooms(socket) {
             names.push(name);
         return names
     }, [])
+}
+
+function getScoreByMessage(message) {
+    return message.split(" ").slice(-2)[0];
+}
+
+function getWinningSocketId(scores) {
+    let min = 0;
+    let socket_id = null;
+    scores.forEach( scoreObject => {
+        if (scoreObject['Score'] > min) {
+            min = scoreObject['Score'];
+            socket_id = scoreObject['Socket_Id'];
+        }
+    });
+    return socket_id
 }
 
